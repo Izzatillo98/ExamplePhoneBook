@@ -1,14 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PhoneBook
+namespace PhoneBookWithFile.Services;
+
+internal class LoggingService : ILoggingService
 {
-    internal class loggingService : IloggingService
+    public void LoggerMenu()
     {
-        public void LogInformation(string message)=>
+        LogInformation("what do you want to do");
+        LogInformation("1. Add a contact");
+        LogInformation("2. Remove a contact");
+        LogInformation("3. Show all contact");
+        LogInformation("4. Exit ");
+    }
+
+    public void LogInformation(string message)
+    {
         Console.WriteLine(message);
     }
 }

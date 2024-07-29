@@ -1,6 +1,7 @@
-﻿namespace PhoneBook
+﻿namespace PhoneBookWithFile.Services;
+
+internal interface ILoggingService
 {
-    internal class IloggingService
-    {
-    }
+    void LoggerMenu();
+    void LogInformation(string message);
 }

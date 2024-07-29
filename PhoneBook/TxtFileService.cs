@@ -1,28 +1,20 @@
 ﻿using PhoneBookWithFile.Models;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
+
 namespace PhoneBookWithFile.Services;
 
-internal class FileService : IFileService
+public class TxtFileService : IFileService
 {
-    private ILoggingService loggingService;
-    private const string filePath = "../../../Contacts.json";
+    private readonly ILoggingService loggingService;
+    private const string filePath = "../../../Contacts.txt";
 
-    public FileService()
+    public TxtFileService()
     {
         this.loggingService = new LoggingService();
         CreateFileIfNotExists();
-    }
-
-    private static void CreateFileIfNotExists()
-    {
-        var isFileExists = File.Exists(filePath);
-        if (isFileExists is false)
-        {
-            File.Create(filePath).Close();
-
-        }
     }
 
     public Contact AddContact(Contact contact)
@@ -37,14 +29,13 @@ internal class FileService : IFileService
     public bool DeleteContact(string phoneNumber)
     {
         var isThereContact = false;
-        var contacts = ReadAllContacts();
+        var contacts = File.ReadAllLines(filePath).ToList();
         foreach (var contact in contacts)
         {
-            if (contact.PhoneNumber == phoneNumber)
+            if (contact.Contains(phoneNumber))
             {
                 isThereContact = true;
                 contacts.Remove(contact);
-                break;
             }
         }
 
@@ -53,13 +44,7 @@ internal class FileService : IFileService
             return false;
         }
 
-        var stringContacts = new List<string>();
-        foreach (var contact in contacts)
-        {
-            var stringContact = JsonSerializer.Serialize(contact);
-            stringContacts.Add(stringContact);
-        }
-        File.WriteAllLines(filePath, stringContacts);
+        File.WriteAllLines(filePath, contacts);
 
         return true;
     }
@@ -76,5 +61,14 @@ internal class FileService : IFileService
         }
 
         return contacts;
+    }
+
+    private static void CreateFileIfNotExists()
+    {
+        var isFileExists = File.Exists(filePath);
+        if (isFileExists is false)
+        {
+            File.Create(filePath).Close();
+        }
     }
 }
