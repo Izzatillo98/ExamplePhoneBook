@@ -21,7 +21,7 @@ internal class FileService : IFileService
         if (isFileExists is false)
         {
             File.Create(filePath).Close();
-                    }
+        }
     }
 
     public Contact AddContact(Contact contact)
