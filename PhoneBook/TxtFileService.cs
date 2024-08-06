@@ -68,7 +68,7 @@ public class TxtFileService : IFileService
         var isFileExists = File.Exists(filePath);
         if (isFileExists is false)
         {
-            File.Create(filePath).Close();
+            File.Create(filePath).Close(); 
         }
     }
 }
